@@ -17,6 +17,7 @@ setup(
         'pyautogui==0.9.53',
         'opencv-python==4.5.5.64',
         'pillow==9.1.0',
-        'pydirectinput==1.0.4'
+        'python-imagesearch==1.2.2',
+        'keyboard==0.13.5'
     ],
 )
