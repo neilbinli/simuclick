@@ -210,8 +210,8 @@ if __name__ == '__main__':
     #通过索引获取表格sheet页
     s = wb.sheet_by_index(0)
     #数据检查
-    check_result = data_check(s)
-    if check_result:
+    result = data_check(s)
+    if result:
         task_handler(s)
     else:
         print('输入有误或者已经退出!')
