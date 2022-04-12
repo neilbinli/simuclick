@@ -36,9 +36,12 @@ def check_if_image_on_screen(img_path, is_refresh_test_region=True):
         return None
 
 
-def mouse_click(click_times, LR, img_path, is_refresh_test_region=True):
+def mouse_click(click_times, LR, img_path, is_refresh_test_region=True, click_location=None):
     while True:
-        location = check_if_image_on_screen(img_path, is_refresh_test_region=is_refresh_test_region)
+        if click_location is None:
+            location = check_if_image_on_screen(img_path, is_refresh_test_region=is_refresh_test_region)
+        else:
+            location = click_location
         if location is not None:
             pyautogui.click(location.x, location.y, clicks=click_times, button=LR)
             break
@@ -145,24 +148,42 @@ def task_handler(sheet):
             is_refresh_test_region = False
         if cmd_type.value == 1.0:
             #取图片名称
-            img_name = sheet.row(next_row)[1].value
-            mouse_click(1, "left", config_path + img_name, is_refresh_test_region=is_refresh_test_region)
+            content = sheet.row(next_row)[1].value
+            if "*" in content:
+                x_axis = int(content.split("*")[0])
+                y_axis = int(content.split("*")[1])
+                location = ctypes.wintypes.POINT(x_axis, y_axis)
+                mouse_click(1, "left", config_path + content, is_refresh_test_region=is_refresh_test_region, click_location=location)
+            else:
+                mouse_click(1, "left", config_path + content, is_refresh_test_region=is_refresh_test_region)
             next_row = int(_next_row)
-            print(f"单击左键{img_name}, 下一跳第{next_row}行")
+            print(f"单击左键{content}, 下一跳第{next_row}行")
         #2代表双击左键
         elif cmd_type.value == 2.0:
             #取图片名称
-            img_name = sheet.row(next_row)[1].value
-            mouse_click(2, "left", config_path + img_name, is_refresh_test_region=is_refresh_test_region)
+            content = sheet.row(next_row)[1].value
+            if "*" in content:
+                x_axis = int(content.split("*")[0])
+                y_axis = int(content.split("*")[1])
+                location = ctypes.wintypes.POINT(x_axis, y_axis)
+                mouse_click(1, "left", config_path + content, is_refresh_test_region=is_refresh_test_region, click_location=location)
+            else:
+                mouse_click(1, "left", config_path + content, is_refresh_test_region=is_refresh_test_region)
             next_row = int(_next_row)
-            print(f"双击左键{img_name}, 下一跳第{next_row}行")
+            print(f"双击左键{content}, 下一跳第{next_row}行")
         #3代表右键
         elif cmd_type.value == 3.0:
             #取图片名称
-            img_name = sheet.row(next_row)[1].value
-            mouse_click(1, "right", config_path + img_name, is_refresh_test_region=is_refresh_test_region)
+            content = sheet.row(next_row)[1].value
+            if "*" in content:
+                x_axis = int(content.split("*")[0])
+                y_axis = int(content.split("*")[1])
+                location = ctypes.wintypes.POINT(x_axis, y_axis)
+                mouse_click(1, "left", config_path + content, is_refresh_test_region=is_refresh_test_region, click_location=location)
+            else:
+                mouse_click(1, "left", config_path + content, is_refresh_test_region=is_refresh_test_region)
             next_row = int(_next_row)
-            print(f"右键{img_name}, 下一跳第{next_row}行")
+            print(f"右键{content}, 下一跳第{next_row}行")
         #4代表输入
         elif cmd_type.value == 4.0:
             #取输入值
